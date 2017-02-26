@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hangman: Country facts</title>
+    <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+</head>
+
+<body>
+    <header>
+        Hangman: Country Facts
+    </header>
+    <div class=countryFacts>
+        <!--  Agregar aqui
+ 1. Imagen
+ 2. Nombre del pais
+ 3. Facts -->
+        <div id=g ame>
+            <p> Press any key to get started!</p>
+            <br>
+            <p>Wins</p>
+            <p id=wins></p>
+            <br>
+            <br>
+            <p>Current Word</p>
+            <p id="hiddenword"></p>
+            <p>Number of guesses remaining></p>
+            <p id=guesses></p>
+            <br>
+            <p>Letters already guesses</p>
+            <p id=lettersguess></p>
+        </div>
+    </div>
+    <script type="text/javascript">
+    // (document).ready(function() {
+    //define array for underscores of words in a new array
+    var theWordSpace = new Array()
+    var secretWords = ["usa", "mexico", "canada", "guatemala", "belize", "brazil", "ecuador", "argentina"];
+    // random number to pick a word
+    var random = Math.floor(Math.random() * 8) + 1;
+    // call the random word
+    for (var i = 0; i < secretWords[random].length; i++) {
+
+        console.log(secretWords[random])
+
+        if (secretWords[random].charAt(i) != " ") {
+            theWordSpace[i] = "_ ";
+        } else {
+            theWordSpace[i] = "/na";
+        }
+
+        // console.log(theWordSpace);
+    </script>
+</body>
+
+</html>
