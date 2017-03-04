@@ -9,48 +9,110 @@
 
 <body>
     <header>
-        Hangman: Country Facts
+        <h1>Hangman: Country Facts</h1>
     </header>
     <div class=countryFacts>
         <!--  Agregar aqui
  1. Imagen
  2. Nombre del pais
  3. Facts -->
-        <div id=g ame>
+        <div id=game>
             <p> Press any key to get started!</p>
-            <br>
-            <p>Wins</p>
-            <p id=wins></p>
-            <br>
-            <br>
-            <p>Current Word</p>
-            <p id="hiddenword"></p>
-            <p>Number of guesses remaining></p>
-            <p id=guesses></p>
-            <br>
-            <p>Letters already guesses</p>
-            <p id=lettersguess></p>
+            <ul id="letters"></ul>
         </div>
     </div>
     <script type="text/javascript">
     // (document).ready(function() {
     //define array for underscores of words in a new array
+  
     var theWordSpace = new Array()
     var secretWords = ["usa", "mexico", "canada", "guatemala", "belize", "brazil", "ecuador", "argentina"];
-    // random number to pick a word
-    var random = Math.floor(Math.random() * 8) + 1;
-    // call the random word
-    for (var i = 0; i < secretWords[random].length; i++) {
+    var word = ""
+    var guesses = 10
+    var wrongGuesses = new Array()
 
-        console.log(secretWords[random])
+    document.onkeypress = function(event){
 
-        if (secretWords[random].charAt(i) != " ") {
-            theWordSpace[i] = "_ ";
-        } else {
-            theWordSpace[i] = "/na";
-        }
+            if (theWordSpace.length===0){
+                var random = Math.floor((Math.random() * 8) + 1);
+                word = secretWords[random];
+                for (var i = 0; i < word.length; i++){
+                    theWordSpace[i] = "_";
+                }
+            }
+            else{
+                var eurekita = false
+                for (var i = 0; i < word.length; i++){
+                   if(event.charCode===word.charCodeAt(i)){
+                    eurekita = true
+                        theWordSpace[i]= word[i];
+                    }
+                 }
 
-        // console.log(theWordSpace);
+                if(!eurekita){
+                    var found = false 
+                    for (var i = 0; i < wrongGuesses.length; i++){
+                    if(wrongGuesses[i]===String.fromCharCode(event.charCode)){
+                        found = true;
+
+                    }
+                    
+                 }
+                     if(!found){
+                         guesses--
+                         wrongGuesses[wrongGuesses.length] = String.fromCharCode(event.charCode);
+                    }   
+            }  
+            }  
+
+            var win = true
+            var lose = guesses < 1
+
+            for (var i = 0; i < theWordSpace.length; i++){
+                 if(theWordSpace[i] === "_" ){
+                    win=false;
+                 }
+
+            }
+
+            if(win){
+
+                var html = "<p>YOU WON! YOUR COUNTRY IS:</p>" + word
+                       
+                   document.querySelector('#game').innerHTML = html;
+
+
+            }
+            else if(lose){
+                var html = "<p>YOU LOSER!!! :( Your word was:</p>" + word
+                       
+                   document.querySelector('#game').innerHTML = html;
+            }
+
+            else{
+                 var display = ""
+                for (var i = 0; i < word.length; i++){
+                    display = display + " " + theWordSpace[i];
+                }
+                     var wg = ""
+
+                for (var i = 0; i < wrongGuesses.length; i++){
+                    wg = wg + " " + wrongGuesses[i];
+
+                }
+                var html = "<p>Press any key to get started! <p>" +
+                        "<p>Current word: </p>" + display + 
+                        "<p>Guesses remaining: " + guesses + "<br>" +
+                        "<p>Bad Guesses: " + wg
+
+
+
+                    document.querySelector('#game').innerHTML = html;
+
+            }
+    }
+
+
     </script>
 </body>
 
