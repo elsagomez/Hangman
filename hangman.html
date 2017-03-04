@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hangman: Country facts</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
     <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
 </head>
 
@@ -16,81 +17,93 @@
  1. Imagen
  2. Nombre del pais
  3. Facts -->
-        <div id=game>
-            <p> Press any key to get started!</p>
+        <div id="game">
+            <h2> Press any key to get started!</h2>
             <ul id="letters"></ul>
         </div>
     </div>
+
+    <div id="results">  
+        <h2>This is your country</h2>
+        <hr>
+        <h2 id="wincountry"></h2>
+    </div>
+
+
     <script type="text/javascript">
     // (document).ready(function() {
     //define array for underscores of words in a new array
   
-    var theWordSpace = new Array()
+    var theWordSpace = new Array()  //en este array se van a poner tantos guiones necesarios de acuerdo a palabra
     var secretWords = ["usa", "mexico", "canada", "guatemala", "belize", "brazil", "ecuador", "argentina"];
-    var word = ""
-    var guesses = 10
-    var wrongGuesses = new Array()
+    var word = "" //array en el que se ira llenando la palabra conforme se adivinen las letras
+    var guesses = 10 //numero de intentos permitidos
+    var wrongGuesses = new Array() //aqui se van a almacenar las letras que no se atinen, para revisarlas y no permitiles despues volver a repetir.
 
     document.onkeypress = function(event){
 
-            if (theWordSpace.length===0){
-                var random = Math.floor((Math.random() * 8) + 1);
-                word = secretWords[random];
-                for (var i = 0; i < word.length; i++){
+            if (theWordSpace.length===0){ //esto porque solo correra cuando no haya palabra seleccionada
+                //solo falta como devolverlo a cero ... checar abajo.
+                var random = Math.floor((Math.random() * 8) + 1); //en random se almacenara el numero azar que despues elegira la palabra
+                word = secretWords[random]; // aqui es cuando ese numero elije la palabra de acuerdo a ese index que se genero al azar. y se almacena en el string word.
+                for (var i = 0; i < word.length; i++){ //aqui se hace un loop para agregar los guiones que se almacena en theWordSpace
                     theWordSpace[i] = "_";
                 }
             }
             else{
-                var eurekita = false
-                for (var i = 0; i < word.length; i++){
-                   if(event.charCode===word.charCodeAt(i)){
+                var eurekita = false //eurekita verificara si la letra presionada esta en alguna posicion en word
+                for (var i = 0; i < word.length; i++){ //se hace un loop por la longitud de word para buscar 
+                   if(event.charCode===word.charCodeAt(i)){ //buscar el caracter y comparar si el presionado es igual a un caracter encontrado en word entonces eurekita se vuelve true.
                     eurekita = true
-                        theWordSpace[i]= word[i];
+                        theWordSpace[i]= word[i]; //esto es para llamar.. cambiar el valor de theWordSpace por el de word y poder reemplazarlo mas adelante
                     }
                  }
 
-                if(!eurekita){
-                    var found = false 
-                    for (var i = 0; i < wrongGuesses.length; i++){
-                    if(wrongGuesses[i]===String.fromCharCode(event.charCode)){
+                if(!eurekita){ //si no hay eurekita entonces se creara una variable para verificar que la tecla presionada no se haya presionado antes, las letras ya presionadas se guardan en wrongGuesses
+                    var found = false //esa variable de comparacion es found
+                    for (var i = 0; i < wrongGuesses.length; i++){ //se hace un loop verificar todas las letras almacenadas en wrongGuesses
+                    if(wrongGuesses[i]===String.fromCharCode(event.charCode)){ //siuna de las letras en el array wrongGuesses es igual a la letra presionada, found se vuelve true.. pero primero el caracter que viene del evento se convierte a un string, porque los elementos en el array wrongGuesses son strings y los tenemos que hacer comparables.
                         found = true;
 
                     }
                     
                  }
-                     if(!found){
+                     if(!found){ //si no se encontro ese caracter en el array.. entonces si se cuenta como guess y se le resta al score guesses
                          guesses--
                          wrongGuesses[wrongGuesses.length] = String.fromCharCode(event.charCode);
+                         //ademas de eso, se manda ese caracter, convertido en string al array wrongGuesses para seguir comparando.
                     }   
             }  
             }  
 
-            var win = true
-            var lose = guesses < 1
+            var win = true  //aqui se definen las variables win y lose. para luego declarar las condiciones
+            var lose = guesses < 1 //lose sera falso cuando haya menos de una oportunidad de adivinar
 
-            for (var i = 0; i < theWordSpace.length; i++){
-                 if(theWordSpace[i] === "_" ){
-                    win=false;
+            for (var i = 0; i < theWordSpace.length; i++){  //se hace un loop para identificar si la variable
+                 if(theWordSpace[i] === "_" ){ //donde se almacenan los guiones todavia tiene guiones
+                    win=false; // esto claro determina que aun no se ha ganado
                  }
 
             }
 
-            if(win){
+            if(win){ //pero si en ese loop no se encuentra ningun guion, win se continua como true y se establece un condicional.. si esto pasa entonces se imprime lo de abajo.
 
-                var html = "<p>YOU WON! YOUR COUNTRY IS:</p>" + word
+                var html = "<h2>YOU WON! YOUR COUNTRY IS:</h2>" + word
                        
                    document.querySelector('#game').innerHTML = html;
 
 
+
+
             }
-            else if(lose){
-                var html = "<p>YOU LOSER!!! :( Your word was:</p>" + word
+            else if(lose){ // pero si pierdes se imprime lo que sigue
+                var html = "<h2>YOU LOSE!!! :( Your word was:</h2>" + word
                        
                    document.querySelector('#game').innerHTML = html;
             }
 
-            else{
-                 var display = ""
+            else{ //este es el else del primer if.. si el lenght de theWordSpace es diferente de 0
+                 var display = "" //entonces se imprimira el display 
                 for (var i = 0; i < word.length; i++){
                     display = display + " " + theWordSpace[i];
                 }
@@ -100,7 +113,7 @@
                     wg = wg + " " + wrongGuesses[i];
 
                 }
-                var html = "<p>Press any key to get started! <p>" +
+                var html = "<h2>Press any key to get started! </h2>" +
                         "<p>Current word: </p>" + display + 
                         "<p>Guesses remaining: " + guesses + "<br>" +
                         "<p>Bad Guesses: " + wg

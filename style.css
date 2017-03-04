@@ -1,0 +1,33 @@
+body{
+	width: 75%;
+}
+
+*{
+	box-sizing: border-box;
+	}
+	
+header{
+	margin: 10px;
+	border: 2px solid purple;
+	padding: 10px;
+}
+
+#game{
+	width: 40%;
+	float: left;
+	border: 2px solid pink;
+	margin: 10px;
+	display: inline-block;
+	overflow: auto;
+
+
+}
+
+#results{
+	width: 50%;
+	float: right;
+	border: 2px solid pink;
+	margin: 10px;
+	display: inline-block;
+	overflow: auto;
+}
